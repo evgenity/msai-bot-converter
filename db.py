@@ -5,9 +5,7 @@ from sqlalchemy.orm import close_all_sessions
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine('sqlite:///bot-converter.db', echo=True)
 Base = declarative_base()
-
 
 class File(Base):
     __tablename__ = 'files'
@@ -31,16 +29,18 @@ class User(Base):
     def __repr__(self):
         return "<User(chat_id='{}', username='{}')>".format(self.chat_id, self.filename)
 
+if __name__ == '__main__':
+    engine = create_engine('sqlite:///bot-converter.db', echo=True)
+    
+    Base.metadata.create_all(engine)
 
-Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
-Session = sessionmaker(bind=engine)
-session = Session()
+    ed_file = File(chat_id=0, filename='test.mov')
+    ed_user = User(chat_id=0, username='admin')
 
-ed_file = File(chat_id=0, filename='test.mov')
-ed_user = User(chat_id=0, username='admin')
+    session.add(ed_file)
+    session.add(ed_user)
 
-session.add(ed_file)
-session.add(ed_user)
-
-session.commit()
+    session.commit()
