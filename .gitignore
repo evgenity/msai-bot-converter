@@ -1,0 +1,8 @@
+*.avi
+*.mov
+*.png
+*.db
+.env
+*.mp4
+*.jpg
+__pycache__/
